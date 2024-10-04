@@ -1,11 +1,43 @@
-<!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8">
-<title>GAME</title>
-</head>
-<body>
-    <h1>验证码游戏</h1>
-    <p>Made by BigJackson!</p>
-</body>
+  <head>
+    <title>reCAPTCHA</title>
+    <script
+      src="https://www.recaptcha.net/recaptcha/api.js"
+      async
+      defer
+    ></script>
+  </head>
+  <body>
+    <div id="html_element"></div>
+    <script>
+      function open() {
+        grecaptcha.render("html_element", {
+          sitekey: "reCAPTCHA_site_key",
+          callback: async function (response) {
+            await fetch("https://api.zhangsifan.com/google/getReCAPTCHA", {
+              method: "POST",
+              body: JSON.stringify({
+                token: response,
+                id: "6LdiW1cqAAAAACLgfV459cfj0IAMuidnRhKRUzy7",
+              }),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }).then(async (response) => {
+              const { result } = await response.json();
+              if (result.success) {
+                if (window.confirm("验证成功,是否重置验证器?")) {
+                  grecaptcha.reset();
+                }
+              } else {
+                window.alert("验证失败,是否重置验证器?");
+                grecaptcha.reset();
+              }
+            });
+          },
+        });
+      }
+      setTimeout(() => open(), 3000);
+    </script>
+  </body>
 </html>
