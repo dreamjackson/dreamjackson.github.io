@@ -1,43 +1,13 @@
 <html>
   <head>
-    <title>reCAPTCHA</title>
-    <script
-      src="https://www.google.com/recaptcha/enterprise.js"
-      async
-      defer
-    ></script>
+    <title>reCAPTCHA demo: Simple page</title>
+    <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
   </head>
   <body>
-    <div id="html_element"></div>
-    <script>
-      function open() {
-        grecaptcha.render("html_element", {
-          sitekey: "reCAPTCHA_site_key",
-          callback: async function (response) {
-            await fetch("https://api.zhangsifan.com/google/getReCAPTCHA", {
-              method: "POST",
-              body: JSON.stringify({
-                token: response,
-                id: "6LdiW1cqAAAAACLgfV459cfj0IAMuidnRhKRUzy7",
-              }),
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }).then(async (response) => {
-              const { result } = await response.json();
-              if (result.success) {
-                if (window.confirm("验证成功,是否重置验证器?")) {
-                  grecaptcha.reset();
-                }
-              } else {
-                window.alert("验证失败,是否重置验证器?");
-                grecaptcha.reset();
-              }
-            });
-          },
-        });
-      }
-      setTimeout(() => open(), 3000);
-    </script>
+    <form action="" method="POST">
+      <div class="g-recaptcha" data-sitekey="6LdiW1cqAAAAACLgfV459cfj0IAMuidnRhKRUzy7" data-action="LOGIN"></div>
+      <br/>
+      <input type="submit" value="Submit">
+    </form>
   </body>
 </html>
